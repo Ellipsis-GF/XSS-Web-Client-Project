@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta http-equiv="content-type" content="text/html;charset=utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="author" content="Fortias Greg; Eric Josien">
+        <meta name="description" content="Site d'introduction sur les failles de type XSS">
+        <title>Accueil</title>
+        <link rel="icon" href="images/favicon.ico">
+        <link rel="stylesheet" type="text/css" media="all" href="style/base.css">
+        <link rel="stylesheet" type="text/css" media="screen" href="style/style.css">
+    </head>
+    <body>
+        <header>
+            <h1>Introduction Au Cross Site Scripting (XSS)</h1>
+        </header>
+        <noscript>
+            <p>Veuillez activer JavaScript pour profiter de la fonctionnalité d'inscription et de connexion.</p>
+        </noscript>
+        <div id="wrap">
+            <nav>
+                <div>
+                    <label for="burger" id="burger-icon">☰</label>
+                    <input type="checkbox" id="burger">
+                    <ul id="left-nav">
+                        <li><div id="image_accueil"><img src="images/accueil.png" alt="logo symbolisant la redirection vers la page d'accueil"></div></li>
+                        <li><a href="reflected.html" class="menu">Reflected XSS</a>
+                            <ul>
+                                <li><a href="reflected.html#presentation" class="menu">Présentation</a></li>
+                                <li><a href="reflected.html#phaseinspection" class="menu">Phase d'inspection</a></li>
+                                <li><a href="reflected.html#phaseexploitation" class="menu">Phase d'exploitation</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="stored.html" class="menu">Stored XSS</a>
+                            <ul>
+                                <li><a href="stored.html#presentation" class="menu">Présentation</a></li>
+                                <li><a href="stored.html#phaseinspection" class="menu">Phase d'inspection</a></li>
+                                <li><a href="stored.html#phaseexploitation" class="menu">Phase d'exploitation</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="dom.html" class="menu">DOM-Based XSS</a>
+                            <ul>
+                                <li><a href="dom.html#presentation" class="menu">Présentation</a></li>
+                                <li><a href="dom.html#phaseinspection" class="menu">Phase d'inspection</a></li>
+                                <li><a href="dom.html#phaseexploitation" class="menu">Phase d'exploitation</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <ul id="right-nav">
+                    <li>
+                        <a href="chat.html" class="menu">Chat</a>
+                    </li>
+                    <li>
+                        <a href="connexion.html" class="menu">Connexion</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <main>
+            <article>
+                <section>
+                    <h2>Qu'est-ce que le cross-site scripting (XSS) ?</h2>
+                        <p>
+                            <em>Le <strong>cross-site scripting</strong> (également connu sous le nom de <strong>XSS</strong>) est une vulnérabilité de la sécurité web qui permet à un attaquant de compromettre 
+                            les interactions des utilisateurs avec un site web vulnérable grâce à une <strong>injection</strong> de contenu dans une page (Javascript, Java, etc...).</em><br>
+                            Il est par exemple possible de rediriger vers un autre site pour de l'<strong>hameçonnage</strong> ou encore de voler la session en récupérant les <strong>cookies</strong>. <br>
+                            Les vulnérabilités de type "cross-site scripting" permettent donc à un attaquant de se faire passer pour un autre utilisateur, d'effectuer toutes 
+                            les actions que l'utilisateur est en mesure d'effectuer et d'accéder à toutes les données de l'utilisateur. <br>
+                            Si l'utilisateur victime dispose d'un accès privilégié à l'application, l'attaquant peut donc être en mesure de prendre 
+                            le contrôle total de toutes les fonctionnalités et données de l'application. <br>
+                        </p>
+                </section>
+                <section>
+                    <h2>Quels sont les différentes type de failles XSS ?</h2>
+                        <p>
+                            On en dénombre 3 types :
+                        </p>
+                        <ul>
+                            <li><a href="#Reflected">Reflected XSS (XSS Réfléchissante)</a>, lorsque le script malveillant vient de la requète http actuelle.</li>
+                            <li><a href="#Stored">Stored XSS (XSS Persistante)</a>, lorsque le script malveillant vient de la base de donnée du serveur.</li>
+                            <li><a href="#DOM">DOM-Based XSS (XSS Basée sur le DOM)</a>, lorsque le script malveillant est injecté directement dans le DOM (Document Object Model) de la page web.</li>
+                        </ul>
+                </section>
+                <section>
+                    <h2 id="Reflected">Reflected XSS</h2>
+                        <img src="images/reflected.png" alt="représentation shématique du fonctionnement d'une reflected XSS">
+                        <p>
+                            C'est le type le plus courant de faille XSS. <em>Dans ce type de faille, le script malveillant est <strong>injecté</strong> dans une URL ou un formulaire</em>. 
+                            Lorsque l'utilisateur ouvre la page web avec cette URL ou soumet le formulaire, le script est exécuté dans le navigateur de l'utilisateur. 
+                             Cette faille est appelée "<strong>réfléchie</strong>" car elle ne persiste pas dans la page web.
+                        </p>
+                </section>
+                <section>
+                    <h2 id="Stored">Stored XSS</h2>
+                        <img src="images/stored.png" alt="représentation shématique du fonctionnement d'une stored XSS">
+                        <p>
+                            Dans ce type de faille, <em>le script malveillant est <strong>stocké</strong> sur le serveur</em>. 
+                            Lorsqu'un utilisateur visite la page web vulnérable, le script est récupéré à partir du <strong>serveur</strong> et exécuté 
+                            dans le navigateur de l'utilisateur. 
+                            Cette faille est appelée "<strong>stockée</strong>" car elle est stockée dans la page web.
+                        </p>
+                </section>
+                <section>
+                    <h2 id="DOM">DOM-Based XSS</h2>
+                    <div class="line">
+                        <img src="images/dom.png" alt="exemple de représentation du DOM">
+                        <p>
+                            Dans ce type de faille, le script malveillant est <strong>injecté</strong> dans le <strong>DOM (Document Object Model)</strong> de la page web. 
+                            <em>Le DOM est la représentation en mémoire de la page web dans le navigateur</em>. Le script est exécuté lorsqu'un utilisateur 
+                            interagit avec la page web, généralement en cliquant sur un lien ou en remplissant un formulaire. 
+                            Cette faille est appelée "<strong>DOM-based</strong>" car elle ne dépend pas du serveur ou de l'utilisateur, mais du DOM de la page web.
+                        </p>
+                    </div>
+                </section>
+            </article>
+            <aside>
+                <h3>Pourquoi Cross-site scripting ?</h3>
+                <p>
+                    « Le problème n'est pas simplement le "scripting", et il n'y a pas forcément quelque chose entre plusieurs sites. 
+                    Alors pourquoi ce nom ? En fait, le nom a été donné quand le problème était moins bien compris, et c'est resté. 
+                    Croyez-moi, nous avions des choses plus importantes à faire que de réfléchir à un meilleur nom. » <br>
+                    Mark Slemko
+                </p>
+            </aside>
+        </main>
+        <footer>
+            <section id="auteur">
+                <p>Auteur:</p>
+                <ul>
+                    <li>Greg Fortias</li>
+                    <li>Eric Josien</li>
+                </ul>
+            </section>
+            <section id="email">
+                <p>Email:</p>
+                <ul>
+                    <li>Greg.FORTIAS@etu.uca.fr</li>
+                    <li>Eric.JOSIEN@etu.uca.fr</li>
+                </ul>
+            </section>
+            <section id="sources">
+                <p>Sources:</p>
+                <ul>
+                    <li><a href="https://portswigger.net/web-security/cross-site-scripting">Portswigger Academy</a></li>
+                    <li><a href="https://fr.wikipedia.org/wiki/Cross-site_scripting">Wikipedia: Cross-site Scripting</a></li>
+                    <li><a href="https://www.reseaucerta.org/sites/default/files/owasp-activite3-v1.0.pdf">Activité de l'OWASP</a></li>
+                </ul>
+            </section>
+        </footer>
+    </body>
+</html>
