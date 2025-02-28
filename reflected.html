@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta http-equiv="content-type" content="text/html;charset=utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="author" content="Fortias Greg; Eric Josien">
+        <meta name="description" content="Site d'introduction sur les failles de type XSS">
+        <title>Accueil</title>
+        <link rel="icon" href="images/favicon.ico">
+        <link rel="stylesheet" type="text/css" media="all" href="style/base.css">
+        <link rel="stylesheet" type="text/css" media="screen" href="style/style.css">
+    </head>
+    <body>
+        <header>
+            <h1>Reflected XSS</h1>
+        </header>
+        <noscript>
+            <p>Veuillez activer JavaScript pour profiter de la fonctionnalité d'inscription et de connexion.</p>
+        </noscript> 
+        <div id="wrap">
+            <nav>
+                <div>
+                    <label for="burger" id="burger-icon">☰</label>
+                    <input type="checkbox" id="burger">
+                    <ul id="left-nav">
+                        <li><a href="index.html" id="image_accueil"><img src="images/accueil.png" alt="logo symbolisant la redirection vers la page d'accueil"></a></li>
+                        <li><div class="menuouvert">Reflected XSS</div>
+                            <ul>
+                                <li><a href="reflected.html#presentation" class="menu">Présentation</a></li>
+                                <li><a href="reflected.html#phaseinspection" class="menu">Phase d'inspection</a></li>
+                                <li><a href="reflected.html#phaseexploitation" class="menu">Phase d'exploitation</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="stored.html" class="menu">Stored XSS</a>
+                            <ul>
+                                <li><a href="stored.html#presentation" class="menu">Présentation</a></li>
+                                <li><a href="stored.html#phaseinspection" class="menu">Phase d'inspection</a></li>
+                                <li><a href="stored.html#phaseexploitation" class="menu">Phase d'exploitation</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="dom.html" class="menu">DOM-Based XSS</a>
+                            <ul>
+                                <li><a href="dom.html#presentation" class="menu">Présentation</a></li>
+                                <li><a href="dom.html#phaseinspection" class="menu">Phase d'inspection</a></li>
+                                <li><a href="dom.html#phaseexploitation" class="menu">Phase d'exploitation</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <ul id="right-nav">
+                    <li>
+                        <a href="chat.html" class="menu">Chat</a>
+                    </li>
+                    <li>
+                        <a href="connexion.html" class="menu">Connexion</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <main>
+            <article>
+                <h2>Exemple d'exploitation d'une faille de type Reflected XSS</h2>
+                <section>
+                    <h3 id="presentation">Présentation du problème</h3>
+                    <p>
+                        Dans cette exemple on va se pencher sur un lab de la section Academy du site <a href="https://portswigger.net/">Portswigger</a> intitulé
+                        <a href="https://portswigger.net/web-security/cross-site-scripting/reflected/lab-html-context-nothing-encoded">Reflected XSS into HTML context with nothing encoded</a>. <br>
+                        Ce titre nous laisse entendre que le site prévoit un formulaire destiné à être remplit par l'utilisateur au serveur <em>sans encoder les informations</em>. Les caractères "&gt;" et "&lt;" seront
+                        donc <em>interprétés comme des <strong>délimiteurs de balise</strong></em>, ainsi le navigateur pourra interpretter les balises <strong>&lt;script&gt;</strong> ce qui devrait rendre facile l'exploitation de la faille XSS.
+                    </p>
+                    <p>
+                        Par la suite l'url transformé peut être envoyé a une personne dans le but que cette dernière envoie notre requête modifiée au server, et ainsi qu'elle 
+                        execute par l'intermédiaire de son navigateur le code injecté car <em>il provient de la réponse du serveur de confiance</em>.
+                    </p>
+                </section>
+
+                <section>
+                    <h3 id="phaseinspection">Phase d'inspection</h3>
+                        <div class="line">
+                            <img src="images/reflected1.png" alt="capture d'écran de la barre de recherche">
+                            <p>
+                                Lorsque l'on arrive sur la page principale du site on aperçoit le fameux formulaire qui se caractérise par une barre de recherche.
+                            </p>
+                        </div>
+                        <hr>
+                        <div class="line">
+                            <img src="images/reflected2.png" alt="capture d'écran du résultat d'une recherche">
+                            <p>
+                                Cette barre de recherche nous permet d'effectuer une recherche parmis les différents blogs que contient ce site.
+                            </p>
+                        </div>  
+                        <hr>                                                            
+                        <div class="line">
+                            <img src="images/reflected3.png" alt="capture d'écran du résultat de la recherche dans le code html">
+                            <p>
+                                On voit bien que les caractères ne sont pas encodés car ma balise est bien interprétée comme une balise.
+                            </p>
+                        </div>     
+                </section>
+
+                <section>
+                    <h3 id="phaseexploitation">Phase d'exploitation</h3>
+                        <div class="line">
+                            <img src="images/reflected4.png" alt="capture d'écran de l'exploit grâce à la barre de recherche">
+                            <p>
+                                Afin de profiter de cette faille de sécurité on va tout simplement écrire le script que l'on veut executer sur le navigateur de la victime, en
+                                l'occurence on va simplement afficher un message d'alerte &lt;script&gt;alert(Challenge Réussi)&lt;/script&gt; contenant le texte "Challenge Réussi".
+                            </p>
+                        </div>
+                        <hr>
+                        <div class="line">
+                            <img src="images/reflected5.png" alt="capture d'écran du message d'alerte après execution de la requête">
+                            <p>
+                                Le message d'alerte s'affiche donc notre payload a fonctionné ! N'importe quel utilisateur ouvrant le lien malicieux
+                                 verra son navigateur executer le script.
+                            </p>
+                        </div>
+                </section>
+            </article>
+            <aside>
+                <h3>Le saviez vous ?</h3>
+                <p>
+                    Le Top 10 de l'OWASP est un rapport régulièrement mis à jour qui expose les préoccupations en matière de sécurité des applications web, 
+                    en se concentrant sur les 10 risques les plus critiques. Le rapport est élaboré par une équipe d'experts en sécurité du monde entier.
+                    Sa dernière mise à jour date de 2021 et dans ce dernier les injections se glissent à la troisième position. 
+                    La catégorie "Injection" comprend les failles suivante:
+                </p>
+                <ul>
+                    <li> Cross-site Scripting</li>
+                    <li> SQL Injection</li>
+                    <li> External Control of File Name or Path</li>
+                </ul>
+            </aside>
+        </main>
+        <footer>
+            <section id="auteur">
+                <p>Auteur:</p>
+                <ul>
+                    <li>Greg Fortias</li>
+                    <li>Eric Josien</li>
+                </ul>
+            </section>
+            <section id="email">
+                <p>Email:</p>
+                <ul>
+                    <li>Greg.FORTIAS@etu.uca.fr</li>
+                    <li>Eric.JOSIEN@etu.uca.fr</li>
+                </ul>
+            </section>
+            <section id="sources">
+                <p>Sources:</p>
+                <ul>
+                    <li><a href="https://portswigger.net/web-security/cross-site-scripting">Portswigger Academy</a></li>
+                    <li><a href="https://fr.wikipedia.org/wiki/Cross-site_scripting">Wikipedia: Cross-site Scripting</a></li>
+                    <li><a href="https://www.reseaucerta.org/sites/default/files/owasp-activite3-v1.0.pdf">Activité de l'OWASP</a></li>
+                </ul>
+            </section>
+        </footer>
+    </body>
+</html>

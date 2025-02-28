@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta http-equiv="content-type" content="text/html;charset=utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="author" content="Fortias Greg; Eric Josien">
+        <meta name="description" content="Site d'introduction sur les failles de type XSS">
+        <title>Connexion</title>
+        <link rel="icon" href="images/favicon.ico">
+        <link rel="stylesheet" type="text/css" media="all" href="style/base.css">
+        <link rel="stylesheet" type="text/css" media="screen" href="style/style.css">
+        <script src="js/connexion.js" defer></script>
+        <script src="js/inscription.js" defer></script>
+    </head>
+    <body>       
+        <header>
+            <h1>Connexion ou inscription</h1>
+        </header>
+        <noscript>
+            <p>Veuillez activer JavaScript pour profiter de la fonctionnalité d'inscription et de connexion.</p>
+        </noscript>   
+        <div id="wrap">
+            <nav>
+                <div>
+                    <label for="burger" id="burger-icon">☰</label>
+                    <input type="checkbox" id="burger">
+                    <ul id="left-nav">
+                        <li><a href="index.html" id="image_accueil"><img src="images/accueil.png" alt="logo symbolisant la redirection vers la page d'accueil"></a></li>
+                        <li><a href="reflected.html" class="menu">Reflected XSS</a>
+                            <ul>
+                                <li><a href="reflected.html#presentation" class="menu">Présentation</a></li>
+                                <li><a href="reflected.html#phaseinspection" class="menu">Phase d'inspection</a></li>
+                                <li><a href="reflected.html#phaseexploitation" class="menu">Phase d'exploitation</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="stored.html" class="menu">Stored XSS</a>
+                            <ul>
+                                <li><a href="stored.html#presentation" class="menu">Présentation</a></li>
+                                <li><a href="stored.html#phaseinspection" class="menu">Phase d'inspection</a></li>
+                                <li><a href="stored.html#phaseexploitation" class="menu">Phase d'exploitation</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="dom.html" class="menu">DOM-Based XSS</a>
+                            <ul>
+                                <li><a href="dom.html#presentation" class="menu">Présentation</a></li>
+                                <li><a href="dom.html#phaseinspection" class="menu">Phase d'inspection</a></li>
+                                <li><a href="dom.html#phaseexploitation" class="menu">Phase d'exploitation</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <ul id="right-nav">
+                    <li>
+                        <a href="chat.html" class="menu">Chat</a>
+                    </li>
+                    <li>
+                        <div class="menuouvert"> Connexion</div>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <main>
+            <article id="center">
+                <h2>Bienvenue dans votre espace de connexion</h2>
+                    <section id="fenetreconnexion">
+                        <h3>Connexion</h3>
+                        <div id="rep-server"></div>
+                        <form method="post" action="htbin/login.py" id="formulaireconnexion">
+                            <label><b>Nom d'utilisateur</b></label>
+                            <input type="text" placeholder="Entrer le nom d'utilisateur" name="user" id="user" required>
+
+                            <label><b>Mot de passe</b></label>
+                            <input type="password" placeholder="Entrer le mot de passe" name="password" id="password" required>
+                            <input type="button" id="submit-connexion" value="Connexion">
+                        </form>
+                    </section>
+                    <section id="fenetreinscription">
+                        <h3>Inscription</h3>
+                        <form method="post" action="htbin/register.py" id="formulaireinscription">
+                            <div>
+                                <label><b>Nom </b></label>
+                                <input type="text" placeholder="Entrez votre nom" name="lastname" id="lastname" required>
+                            </div>
+
+                            <div>
+                                <label><b>Prénom</b></label>
+                                <input type="text" placeholder="Entrez votre prénom" name="firstname" id="firstname" required>
+                            </div>
+
+                            <div>
+                                <label><b>Date de naissance</b></label>
+                                <input type="text" placeholder="Entrez votre date de naissance" name="birthdate" id="birthdate">
+                            </div>
+
+                            <div>
+                                <label><b>Nom d'utilisateur</b></label>
+                                <input type="text" placeholder="Entrez le nom d'utilisateur" name="username" id="username" required>
+                            </div>
+
+                            <div>
+                                <label><b>Mot de passe</b></label>
+                                <input type="password" placeholder="Entrez le mot de passe" name="userpwd" id="userpwd" required>
+                            </div>
+
+                            <div>
+                                <label><b>Mail</b></label>
+                                <input type="text" placeholder="Entrez votre email" name="useremail" id="useremail" required>
+                            </div>
+                            
+                            <div>
+                                <button type="submit" form="formulaireinscription">S'inscrire</button>
+                            </div>
+                        </form>
+                    </section>
+            </article>
+        </main>
+        <footer>
+            <section id="auteur">
+                <p>Auteur:</p>
+                <ul>
+                    <li>Greg Fortias</li>
+                    <li>Eric Josien</li>
+                </ul>
+            </section>
+            <section id="email">
+                <p>Email:</p>
+                <ul>
+                    <li>Greg.FORTIAS@etu.uca.fr</li>
+                    <li>Eric.JOSIEN@etu.uca.fr</li>
+                </ul>
+            </section>
+            <section id="sources">
+                <p>Sources:</p>
+                <ul>
+                    <li><a href="https://portswigger.net/web-security/cross-site-scripting">Portswigger Academy</a></li>
+                    <li><a href="https://fr.wikipedia.org/wiki/Cross-site_scripting">Wikipedia: Cross-site Scripting</a></li>
+                    <li><a href="https://www.reseaucerta.org/sites/default/files/owasp-activite3-v1.0.pdf">Activité de l'OWASP</a></li>
+                </ul>
+            </section>
+        </footer>
+    </body>
+</html>

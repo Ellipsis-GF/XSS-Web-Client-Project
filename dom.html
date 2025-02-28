@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta http-equiv="content-type" content="text/html;charset=utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="author" content="Fortias Greg; Eric Josien">
+        <meta name="description" content="Site d'introduction sur les failles de type XSS">
+        <title>Accueil</title>
+        <link rel="icon" href="images/favicon.ico">
+        <link rel="stylesheet" type="text/css" media="all" href="style/base.css">
+        <link rel="stylesheet" type="text/css" media="screen" href="style/style.css">
+    </head>
+    <body>
+        <header>
+            <h1>DOM-Based XSS</h1>
+        </header>
+        <noscript>
+            <p>Veuillez activer JavaScript pour profiter de la fonctionnalité d'inscription et de connexion.</p>
+        </noscript> 
+        <div id="wrap">
+            <nav>
+                <div>
+                    <label for="burger" id="burger-icon">☰</label>
+                    <input type="checkbox" id="burger">
+                    <ul id="left-nav">
+                        <li><a href="index.html" id="image_accueil"><img src="images/accueil.png" alt="logo symbolisant la redirection vers la page d'accueil"></a></li>
+                        <li><a href="reflected.html" class="menu">Reflected XSS</a>
+                            <ul>
+                                <li><a href="reflected.html#presentation" class="menu">Présentation</a></li>
+                                <li><a href="reflected.html#phaseinspection" class="menu">Phase d'inspection</a></li>
+                                <li><a href="reflected.html#phaseexploitation" class="menu">Phase d'exploitation</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="stored.html" class="menu">Stored XSS</a>
+                            <ul>
+                                <li><a href="stored.html#presentation" class="menu">Présentation</a></li>
+                                <li><a href="stored.html#phaseinspection" class="menu">Phase d'inspection</a></li>
+                                <li><a href="stored.html#phaseexploitation" class="menu">Phase d'exploitation</a></li>
+                            </ul>
+                        </li>
+                        <li><div class="menuouvert"> DOM-Based XSS</div>
+                            <ul>
+                                <li><a href="dom.html#presentation" class="menu">Présentation</a></li>
+                                <li><a href="dom.html#phaseinspection" class="menu">Phase d'inspection</a></li>
+                                <li><a href="dom.html#phaseexploitation" class="menu">Phase d'exploitation</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <ul id="right-nav">
+                    <li>
+                        <a href="chat.html" class="menu">Chat</a>
+                    </li>
+                    <li>
+                        <a href="connexion.html" class="menu">Connexion</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <main>
+            <article>
+                <h2>Exemple d'exploitation d'une faille de type DOM-Based XSS</h2>
+                    <section>
+                        <h3 id="presentation">Présentation du problème</h3>
+                            <p>
+                                Dans cette exemple on va se pencher sur un lab de la section Academy du site <a href="https://portswigger.net/">Portswigger</a> intitulé
+                                <a href="https://portswigger.net/web-security/cross-site-scripting/dom-based/lab-document-write-sink">DOM-XSS in document.write sink using source location.search</a>. <br>
+                                Ce titre nous laisse entendre que l'on doit chercher une faille de type "DOM-Based XSS" dont la source viendrait d'une requête effectuée grâce à une barre de recherche dans 
+                                laquelle on pourrait utiliser librement <em>la méthode javascript <strong>"document.write()"</strong> qui permet d'écrire dans la page web</em>.
+                            </p>
+                    </section>
+
+                    <section>
+                        <h3 id="phaseinspection">Phase d'inspection</h3>
+                            <div class="line">
+                                <img src="images/dom1.png" alt="capture d'écran de la barre de recherche">
+                                <p>
+                                    Lorsque l'on arrive sur la page principale du site on aperçoit la fameuse barre de recherche.
+                                </p>
+                            </div>
+                            <hr>
+                            <div class="line">
+                                <img src="images/dom2.png" alt="capture d'écran du résultat d'une recherche">
+                                <p>
+                                    Cette barre de recherche nous permet d'effectuer une recherche parmis les différents blogs que contient ce site.
+                                </p>
+                            </div>  
+                            <hr>
+                            <div class="line">
+                                <img src="images/dom3.png" alt="capture d'écran du résultat de la recherche dans le code html">
+                                <p>
+                                    Premièrement en analysant le code source on voit que notre recherche est envoyé dans un formulaire grâce à la méthode GET. <br>
+                                    Deuxièmement on note l'existence de la fonction "trackSearch()" qui va utiliser la méthode javascript "document.write()"
+                                    afin d'afficher le contenu de notre recherche sur la page web. <br>
+                                    On va donc utiliser ce vecteur d'attaque pour injecter notre payload.
+                                </p>
+                            </div>
+                    </section>
+                    
+                    <section>
+                        <h3 id="phaseexploitation">Phase d'exploitation</h3>
+                            <div class="line">
+                                <img src="images/dom4.png" alt="capture d'écran de l'exploit grâce à la barre de recherche">
+                                <p>
+                                    Afin de profiter de cette faille de sécurité on va commencer notre payload en indiquant les caractères "> afin d'indiquer dans le code html la fin de 
+                                    la balise img, puis on ajoute à la suite &lt;script&gt;alert(Challenge Réussi)&lt;/script&gt; ce qui aura pour effet d'executer du code javascript, 
+                                    en l'occurence le navigateur affichera un message d'alerte contenant le texte "Challenge Réussi".
+                                </p>
+                            </div>
+                            <hr>
+                            <div class="line">
+                                <img src="images/dom5.png" alt="capture d'écran du message d'alerte après execution de la requête">
+                                <p>
+                                    Le message d'alerte s'affiche donc notre payload a fonctionné ! N'importe quel utilisateur ouvrant le lien malicieux 
+                                    verra son navigateur executer le script.
+                                </p>
+                            </div>
+                    </section>                
+            </article>
+            <aside>
+                <h3>DOM-Based ? Je connaissais pas c'est quoi ?</h3>
+                    <p>
+                        Les DOM-based XSS sont des vulnérabilités particulièrement méconnues car plutôt rares. 
+                        En effet, il s’agit d’une variante de XSS (Cross-Site Scripting) – certainement l’une des failles les plus répandues dans les applications web. <br>
+                        <a href="https://www.vaadata.com/blog/fr/failles-xss-principes-types-dattaques-exploitations-et-bonnes-pratiques-securite/">Lire la suite</a>
+                    </p>
+            </aside>
+        </main>
+        <footer>
+            <section id="auteur">
+                <p>Auteur:</p>
+                <ul>
+                    <li>Greg Fortias</li>
+                    <li>Eric Josien</li>
+                </ul>
+            </section>
+            <section id="email">
+                <p>Email:</p>
+                <ul>
+                    <li>Greg.FORTIAS@etu.uca.fr</li>
+                    <li>Eric.JOSIEN@etu.uca.fr</li>
+                </ul>
+            </section>
+            <section id="sources">
+                <p>Sources:</p>
+                <ul>
+                    <li><a href="https://portswigger.net/web-security/cross-site-scripting">Portswigger Academy</a></li>
+                    <li><a href="https://fr.wikipedia.org/wiki/Cross-site_scripting">Wikipedia: Cross-site Scripting</a></li>
+                    <li><a href="https://www.reseaucerta.org/sites/default/files/owasp-activite3-v1.0.pdf">Activité de l'OWASP</a></li>
+                </ul>
+            </section>
+        </footer>
+    </body>
+</html>

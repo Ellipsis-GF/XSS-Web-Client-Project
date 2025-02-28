@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta http-equiv="content-type" content="text/html;charset=utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="author" content="Fortias Greg; Eric Josien">
+        <meta name="description" content="Site d'introduction sur les failles de type XSS">
+        <title>Accueil</title>
+        <link rel="icon" href="images/favicon.ico">
+        <link rel="stylesheet" type="text/css" media="all" href="style/base.css">
+        <link rel="stylesheet" type="text/css" media="screen" href="style/style.css">
+        <script src="//code.jquery.com/jquery-1.12.0.min.js" defer></script>
+        <script src="js/chat.js" defer></script>
+    </head>
+    <body>
+        <header>
+            <h1>Chat</h1>
+        </header>
+        <noscript>
+            <p>Veuillez activer JavaScript pour profiter de la fonctionnalité d'inscription et de connexion.</p>
+        </noscript> 
+        <div id="wrap">
+            <nav>
+                <div>
+                    <label for="burger" id="burger-icon">☰</label>
+                    <input type="checkbox" id="burger">
+                    <ul id="left-nav">
+                        <li><a href="index.html" id="image_accueil"><img src="images/accueil.png" alt="logo symbolisant la redirection vers la page d'accueil"></a></li>
+                        <li><a href="reflected.html" class="menu">Reflected XSS</a>
+                            <ul>
+                                <li><a href="reflected.html#presentation" class="menu">Présentation</a></li>
+                                <li><a href="reflected.html#phaseinspection" class="menu">Phase d'inspection</a></li>
+                                <li><a href="reflected.html#phaseexploitation" class="menu">Phase d'exploitation</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="stored.html" class="menu">Stored XSS</a>
+                            <ul>
+                                <li><a href="stored.html#presentation" class="menu">Présentation</a></li>
+                                <li><a href="stored.html#phaseinspection" class="menu">Phase d'inspection</a></li>
+                                <li><a href="stored.html#phaseexploitation" class="menu">Phase d'exploitation</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="dom.html" class="menu">DOM-Based XSS</a>
+                            <ul>
+                                <li><a href="dom.html#presentation" class="menu">Présentation</a></li>
+                                <li><a href="dom.html#phaseinspection" class="menu">Phase d'inspection</a></li>
+                                <li><a href="dom.html#phaseexploitation" class="menu">Phase d'exploitation</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <ul id="right-nav">
+                    <li>
+                        <div class="menuouvert">Chat</div>
+                    </li>
+                    <li>
+                        <a href="connexion.html" class="menu">Connexion</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <main>
+            <article id="center">
+                <h2>Bienvenue dans l'espace de discussion</h2>
+                <p>
+                    Sur cette page vous pouvez poser vos questions afin d'éclairer vos incompréhensions.
+                    Tout commentaires et conseils d'amélioration du site sont appréciés.
+                </p>
+                <section id="hist-conv">
+                    <h3>Historique des conversations</h3>
+                    <div></div>
+                </section>
+                <section>
+                    <h3>Postez votre message</h3>
+                    <div id="rep-server"></div>
+                    <form action="htbin/chatsend.py" id="formulairemessagerie">
+                        <textarea placeholder="Ecrivez ici." name="commentaire" id="commentaire"></textarea>
+
+                        <input type="button" id="submit-com" value="Poster">
+                    </form>
+                </section>
+            </article>
+        </main>
+        <footer>
+            <section id="auteur">
+                <p>Auteur:</p>
+                <ul>
+                    <li>Greg Fortias</li>
+                    <li>Eric Josien</li>
+                </ul>
+            </section>
+            <section id="email">
+                <p>Email:</p>
+                <ul>
+                    <li>Greg.FORTIAS@etu.uca.fr</li>
+                    <li>Eric.JOSIEN@etu.uca.fr</li>
+                </ul>
+            </section>
+            <section id="sources">
+                <p>Sources:</p>
+                <ul>
+                    <li><a href="https://portswigger.net/web-security/cross-site-scripting">Portswigger Academy</a></li>
+                    <li><a href="https://fr.wikipedia.org/wiki/Cross-site_scripting">Wikipedia: Cross-site Scripting</a></li>
+                    <li><a href="https://portswigger.net/web-security/cross-site-scripting">Activité de l'OWASP</a></li>
+                </ul>
+            </section>
+        </footer>
+    </body>
+</html>
