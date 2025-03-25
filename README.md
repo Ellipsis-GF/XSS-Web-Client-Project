@@ -81,9 +81,12 @@ To run the project locally:
 
 ## Screenshots
 
-- **Login page**
-- **Registration page**
+- **Home page**
+![Home page](screenshots/Home.png)
+- **Login / Registration page**
+![Home page](screenshots/Login.png)
 - **Chat interface**
+![Home page](screenshots/Chat.png)
 
 ## Conclusion
 
