@@ -48,7 +48,7 @@ bouton.addEventListener('click', function (){
     }; 
 
     let data = "username=" + username + "&userpwd="+ password; // création du corp de la requête au format URL-encoded
-    xhr.open("POST", "htbin/login.py",  true);
+    xhr.open("POST", "http://127.0.0.1:5000/login",  true);
     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     xhr.send(data); // envoie de la requête
 });

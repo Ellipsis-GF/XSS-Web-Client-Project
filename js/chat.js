@@ -8,7 +8,7 @@ $(document).ready(function() {
     
     function refreshChat() {
         // Fonction de raffraichissement de l'historique du chat
-        $.get("htbin/chatget.py", function(data) {
+        $.get("http://127.0.0.1:5000/chatget", function(data) {
             // Sélection de la zone de chat et suppression de cette dernière puis affichage de la version rafraichit (5sec)
             var $histConv = $("#hist-conv div");
             $histConv.text("");
@@ -35,24 +35,27 @@ $(document).ready(function() {
     $("#submit-com").click(function() {
     // Envoie de la requête http et affichage de la réponse
         var message = $("#commentaire").val();
-        $.post("htbin/chatsend.py", { msg: message }, function(data) {
-            var $repServer = $("#rep-server");
-            $repServer.text("");
-            msg = data.msg;
-            if (data.num === 1) {
-                $repServer.css('color', 'red');
-                $repServer.append(msg);
-            } else if (data.num === -1) {
-                $repServer.css('color', 'red');
-                $repServer.append(msg);
-            } else {
-                // Sélection du dernier paragraphe dans la div et suppression de ce dernier qui représente l'ancien message d'erreur si il existe     
-                $repServer.css('color', 'green');
-                $repServer.append(msg);
-                refreshChat(); // On raffraichit le chat à chaques fois que l'utilisateur envoie un message
-                $("#commentaire").val("");
+        $.ajax({
+            url: "http://127.0.0.1:5000/chatsend",
+            type: "POST",
+            data: JSON.stringify({ msg: message}),
+            contentType: "application/json",
+            dataType: "json",
+            success: function(data) {
+                var $repServer = $("#rep-server");
+                $repServer.text("");
+                if (data.num === 1) {
+                    $repServer.css('color', 'red').append(data.msg);
+                } else {
+                    $repServer.css('color', 'green').append(data.msg);
+                    refreshChat(); // Rafraîchir le chat après l'envoi
+                    $("#commentaire").val(""); // Effacer le champ de message
+                }
+            },
+            error: function() {
+                $("#rep-server").css('color', 'red').text("Error sending message");
             }
-        }, "json");
+        });        
     });
       
 });
